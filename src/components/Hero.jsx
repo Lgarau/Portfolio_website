@@ -1,42 +1,67 @@
-import { motion, MotionConfig } from "framer-motion"
-import image from "../../../../../fotocv.jpg"
+import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { BsGithub, BsInstagram, BsLinkedin } from "react-icons/bs";
 
+const words = ["Developer.", "Creative Mind.", "Tech Lover.", "Innovation enthusiast."];
 
 const Hero = () => {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % words.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div id="home" className="px-16 flex min-h-screen w-full items-center justify-center py-28 md:px-32">
+    <section id="home" className="bg-gradient-to-tr from-stone-900 to-gray-800 flex center flex-col items-center justify-center min-h-screen w-full px-6 py-28 md:flex-row md:px-16">
+  <div className="absolute inset-0"></div>
 
-      <div className="flex flex-col items-center justify-center gap-10 text-white">
-        <motion.div
-        initial={{y: -50, opacity:0}}
-        animate={{y: 0, opacity:1}}
-        transition={{duration: 0.8, delay:0.2}}
+  <div className=" flex z-10 flex flex-col items-center text-center md:items-center md:text-center md:w-1/2">
+        <motion.h2
+          key={index}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.5 }}
+          className="text-7xl md:text-7xl font-bold text-white"
         >
-          <img src={image} alt="" className="w-[160px] cursor-pointer rounded-full shadow-xl shadow-indigo-900
-          transition-all duration-300 hover:-translate-y-5 hover:scale-105 hover:shadow-2xl hover:shadow-indigo-600
-          md:w-[230px]"/>
-          </motion.div>
-          <motion.div 
-          initial={{y: 50, opacity:0}}
-          animate={{y: 0, opacity:1}}
-          transition={{duration: 0.8, delay:0.2}}
-          
-          
-          className="flex max-w-[600px] flex-col items-center justify-center gap-5 text-center">
-            <h1 className="bg-gradient-to-r from-blue-500 to-orange-500 bg-clip-text text-transparent 
-      text-3xl font-light md:text-5xl">Laura Garau</h1>
-            <h3 className="bg-gradient-to-r from-orange-500 to-blue-500 bg-clip-text text-transparent 
-      text-1xl md:text-2xl">Web Developer</h3>
-            <p className="md:text-base text-pretty text-sm text-gray-400">
-              I'm a web developer skilled in React, Node.js and Typescript, focused on building clean scalable applications.
-              From front-end design to seamless database integration with Mongodb and Node.js for back-end, I create efficient solutions for dynamic user experiences. 
-              Let's build something great!
-            </p>
-          
-        </motion.div>
+          {words[index]}</motion.h2>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.4 }}
+          className="mt-4 max-w-md text-white"
+        >
+          I'm Laura Garau. I am a passionate full stack developer based in Sardinia, Italy.
+          Focused on building responsive web applications with
+          modern technologies.
+        </motion.p>
+      
+      <div className="flex gap-8 mt-12 text-2xl text-white">
+          <a
+            href="https://www.linkedin.com/in/laura-garau-3a2248194/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn Profile"
+            className="hover:text-blue-400"
+          >
+            <BsLinkedin />
+          </a>
+          <a
+            href="https://github.com/Lgarau"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub Profile"
+            className="hover:text-orange-800"
+          >
+            <BsGithub />
+          </a>
+        </div>
       </div>
-    </div>
-  )
-}
+    </section>
+  );
+};
 
-export default Hero
+export default Hero;

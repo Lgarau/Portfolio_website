@@ -1,120 +1,147 @@
-import { BiX } from "react-icons/bi";
-import { BsGithub, BsInstagram, BsLinkedin } from "react-icons/bs"
-import {useState} from "react"
-import { BiMenu } from "react-icons/bi";
-import logo from "../assets/logoLG.png"
-
+import { useState, useEffect } from "react";
+import { BiX, BiMenu } from "react-icons/bi";
+import { BsGithub, BsInstagram, BsLinkedin } from "react-icons/bs";
+import logo from "../assets/logopin.png";
 
 const Navbar = () => {
-
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  const [scrolling, setScrolling] = useState(false);
 
-  const menuOpen =() => {
-    setIsOpen (!isOpen);
-  }
+  const menuOpen = () => setIsOpen(!isOpen);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolling(window.scrollY > 50);
+      const sections = ["home", "tech", "projects", "contact"];
+      sections.forEach((section) => {
+        const el = document.getElementById(section);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 100 && rect.bottom >= 100) {
+            setActiveSection(section);
+          }
+        }
+      });
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    
-    <nav className="fixed top-0 z-10 flex w-full items-center justify-between border-b-gray-700 bg-black/70 px-16 py-6 text-white 
-    backdrop-blur-md md:justify-evenly">
-      <a href="#home" className="bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent opacity-80 
-      text-3xl font-semibold transition-all duration-300 hover:opacity-100"><img src={logo} className="max-h-20"></img></a>
-
-      <ul className="hidden md:flex gap-10">
-        <a href="#home" className="cursor-pointer opacity-70 transition-all duration-300 hover:opacity-100">
-          <li>Home</li>
-        </a>
-        <a href="#tech" className="cursor-pointer opacity-70 transition-all duration-300 hover:opacity-100">
-          <li>Tech</li>
-        </a>
-        <a href="#projects" className="cursor-pointer opacity-70 transition-all duration-300 hover:opacity-100">
-          <li>Projects</li>
-        </a>
-        <a href="#contact" className="cursor-pointer opacity-70 transition-all duration-300 hover:opacity-100">
-          <li>Contact</li>
-        </a>
-
-      </ul>
-
-      <ul className="hidden md:flex gap-10">
-  <li className="cursor-pointer text-xl opacity-70 transition-all duration-300 hover:text-red-500 hover:opacity-100">
-    <a 
-      href="https://www.linkedin.com/in/laura-garau-3a2248194/" 
-      target="_blank" 
-      rel="noopener noreferrer" 
-      aria-label="LinkedIn Profile"
+    <nav
+      className={`fixed max-w-[1200px] mx-auto w-full top-0 z-10 w-full px-3 py-1 rounded-lg backdrop-blur-lg transition-all duration-300 ease-in-out ${
+        scrolling ? "bg-black text-white shadow-xl rounded-lg" : "bg-white text-black"
+      }`}
     >
-      <BsLinkedin />
-    </a>
-  </li>
+      <div className="flex justify-between items-center">
+        <a href="#home">
+          <img src={logo} className="max-h-8" alt="Logo" />
+        </a>
 
-  <li className="cursor-pointer text-xl opacity-70 transition-all duration-300 hover:text-blue-500 hover:opacity-100">
-    <a 
-      href="https://www.instagram.com/laura__garau/" 
-      target="_blank" 
-      rel="noopener noreferrer" 
-      aria-label="Instagram Profile"
-    >
-      <BsInstagram />
-    </a>
-  </li>
+        {/* Menu Desktop */}
+        <ul className="hidden md:flex gap-8 text-base">
+          {["home", "tech", "projects", "contact"].map((section) => (
+            <a
+              key={section}
+              href={`#${section}`}
+              className={`cursor-pointer transition-all duration-300 ${
+                activeSection === section
+                  ? "text-white-400 font-semibold"
+                  : "opacity-60 hover:opacity-100"
+              }`}
+            >
+              <li className="capitalize">{section}</li>
+            </a>
+          ))}
+        </ul>
 
-  <li className="cursor-pointer text-xl opacity-70 transition-all duration-300 hover:text-orange-500 hover:opacity-100">
-    <a 
-      href="https://github.com/Lgarau" 
-      target="_blank" 
-      rel="noopener noreferrer" 
-      aria-label="GitHub Profile"
-    >
-      <BsGithub />
-    </a>
-  </li>
-</ul>
-
-{isOpen ? (
-        <BiX className="block md:hidden text-4xl" onClick={menuOpen} />
-      ) : (
-        <BiMenu className="block md:hidden text-4xl" onClick={menuOpen} />
-      )}
-
-      
-      <div
-        className={`fixed right-0 top-[84px] flex h-screen w-1/2 flex-col items-start gap-10 border-1 border-gray-800 bg-black/90 p-12 transition-transform duration-300 ease-in-out z-20 ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <ul className="flex flex-col gap-8">
-          <a href="#home" className="cursor-pointer opacity-70 transition-all duration-300 hover:opacity-100">
-            <li>Home</li>
+        {/* Social Icons */}
+        <ul className="hidden md:flex gap-4 text-xl">
+          <a
+            href="https://www.linkedin.com/in/laura-garau-3a2248194/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn Profile"
+            className="hover:text-blue-400"
+          >
+            <BsLinkedin />
           </a>
-          <a href="#tech" className="cursor-pointer opacity-70 transition-all duration-300 hover:opacity-100">
-            <li>Tech</li>
+          <a
+            href="https://www.instagram.com/laura__garau/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram Profile"
+            className="hover:text-pink-500"
+          >
+            <BsInstagram />
           </a>
-          <a href="#projects" className="cursor-pointer opacity-70 transition-all duration-300 hover:opacity-100">
-            <li>Projects</li>
-          </a>
-          <a href="#contact" className="cursor-pointer opacity-70 transition-all duration-300 hover:opacity-100">
-            <li>Contact</li>
+          <a
+            href="https://github.com/Lgarau"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub Profile"
+            className="hover:text-blue-800"
+          >
+            <BsGithub />
           </a>
         </ul>
 
-        
-        <ul className="flex flex-wrap gap-5 justify-center sm:justify-start z-30">
-          <li className="cursor-pointer text-xl opacity-70 transition-all duration-300 hover:text-red-500 hover:opacity-100">
-            <a href="https://www.linkedin.com/in/laura-garau-3a2248194/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
-              <BsLinkedin />
+        {/* Mobile Icon */}
+        {isOpen ? (
+          <BiX className="block md:hidden text-3xl" onClick={menuOpen} />
+        ) : (
+          <BiMenu className="block md:hidden text-3xl" onClick={menuOpen} />
+        )}
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={`fixed right-0 w-2/3 md:hidden bg-black/90 p-6 transition-transform duration-300 ease-in-out z-30 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <ul className="flex flex-col gap-6 text-white">
+          {["home", "tech", "projects", "contact"].map((section) => (
+            <a
+              key={section}
+              href={`#${section}`}
+              className="cursor-pointer opacity-70 transition-all duration-300 hover:opacity-100"
+              onClick={menuOpen}
+            >
+              <li className="capitalize">{section}</li>
             </a>
-          </li>
-          <li className="cursor-pointer text-xl opacity-70 transition-all duration-300 hover:text-blue-500 hover:opacity-100">
-            <a href="https://www.instagram.com/laura__garau/" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profile">
-              <BsInstagram />
-            </a>
-          </li>
-          <li className="cursor-pointer text-xl opacity-70 transition-all duration-300 hover:text-orange-500 hover:opacity-100">
-            <a href="https://github.com/Lgarau" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
-              <BsGithub />
-            </a>
-          </li>
+          ))}
+        </ul>
+
+        <ul className="flex gap-4 text-xl mt-6">
+          <a
+            href="https://www.linkedin.com/in/laura-garau-3a2248194/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn Profile"
+            className="hover:text-blue-400"
+          >
+            <BsLinkedin />
+          </a>
+          <a
+            href="https://www.instagram.com/laura__garau/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram Profile"
+            className="hover:text-pink-500"
+          >
+            <BsInstagram />
+          </a>
+          <a
+            href="https://github.com/Lgarau"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub Profile"
+            className="hover:text-sky-950"
+          >
+            <BsGithub />
+          </a>
         </ul>
       </div>
     </nav>

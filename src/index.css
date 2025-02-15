@@ -3,19 +3,29 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* Applica Poppins globalmente */
 * {
-    font-family: poppins;
+    font-family: 'Poppins', sans-serif;
     scroll-behavior: smooth;
 }
 
+/* Personalizzazione della scrollbar */
 ::-webkit-scrollbar {
-    width: 20px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0, 9);
+    background: rgba(0, 0, 0, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, rgb(0, 62, 196), rgb(36, 36, 36));
+    background: linear-gradient(to bottom, #04151f, #f4f0f0);
+    border-radius: 10px;
 }
+
+/* Aggiungi un effetto di transizione al passaggio del mouse sui bottoni */
+button, a {
+    transition: all 0.3s ease-in-out;
+}
+
